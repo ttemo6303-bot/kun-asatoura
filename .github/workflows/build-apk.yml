@@ -10,11 +10,13 @@ jobs:
           node-version: 20
       - name: Install Capacitor
         run: |
+          mkdir -p www
+          cp index.html www/index.html
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
-          npx cap init "KunAsatoura" com.kunasatoura.app --web-dir="."
+          npx cap init "KunAsatoura" com.kunasatoura.app --web-dir=www
           npx cap add android
-          npx cap copy android
+          npx cap copy
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
