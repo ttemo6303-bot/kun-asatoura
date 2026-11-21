@@ -8,22 +8,25 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install -g @capacitor/cli
-      - run: |
+      - name: Install Capacitor
+        run: |
           npm init -y
-          npm install @capacitor/core @capacitor/android
-          npx cap init "Kun Asatoura" com.kunasatoura.game --web-dir=.
+          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npx cap init "KunAsatoura" com.kunasatoura.app --web-dir="."
           npx cap add android
-          npx cap copy
-      - uses: actions/setup-java@v4
+          npx cap copy android
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
-      - run: |
+      - name: Build APK
+        run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
-      - uses: actions/upload-artifact@v4
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
           name: kun-asatoura-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
